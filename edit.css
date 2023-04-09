@@ -1,0 +1,28 @@
+body {
+    background-color: burlywood;
+}
+header {
+   background-color:crimson;
+   text-align: center;
+   font-size: xx-large;
+   font-family:fantasy;
+  margin:10px;
+  
+
+}
+main {
+   padding: 25px;
+   background-color:black;
+   -webkit-text-fill-color: aliceblue;
+   font-family:cursive;
+   font-size: x-large;
+   border-left: 35px;
+
+}
+
+footer {
+    text-align: center;
+    background-color:cornflowerblue;
+    padding:12px;
+
+}
