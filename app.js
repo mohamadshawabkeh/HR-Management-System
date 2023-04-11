@@ -1,5 +1,5 @@
 "use strict"
-
+/*
 function Employee(employeeId, fullName, department, level, imageUrl) {
     this.employeeId = employeeId;
     this.fullName = fullName;
@@ -52,3 +52,82 @@ var employees = [
 for (var i = 0; i < employees.length; i++) {
   employees[i].render();
 }
+*/
+
+function Employee(fullName, department, level, imageUrl) {
+  this.fullName = fullName;
+  this.department = department;
+  this.level = level;
+  this.imageUrl = imageUrl;
+  this.employeeId = generateEmployeeId(); 
+
+  this.render = function() {
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    const img = document.createElement('img');
+    img.src = this.imageUrl;
+    img.alt = 'Employee Photo';
+    card.appendChild(img);
+
+    const name = document.createElement('h2');
+    name.textContent = this.fullName;
+    card.appendChild(name);
+
+    const department = document.createElement('p');
+    department.textContent = `Department: ${this.department}`;
+    card.appendChild(department);
+
+    const level = document.createElement('p');
+    level.textContent = `Level: ${this.level}`;
+    card.appendChild(level);
+
+    const employeeId = document.createElement('p');
+    employeeId.textContent = `Employee ID: ${this.employeeId}`;
+    card.appendChild(employeeId);
+
+    const container = document.querySelector('.card-container');
+    container.appendChild(card);
+
+    let departmentContainer = document.querySelector(`.${this.department.toLowerCase()}-container`);
+  if (!departmentContainer) {
+    departmentContainer = document.createElement('div');
+    departmentContainer.className = `department-container ${this.department.toLowerCase()}-container`;
+
+    const departmentTitle = document.createElement('h2');
+    departmentTitle.textContent = this.department;
+    departmentContainer.appendChild(departmentTitle);
+
+    container.appendChild(departmentContainer);
+  }
+
+  departmentContainer.appendChild(card);
+};
+  };
+
+function generateEmployeeId() {
+  return Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000;
+}
+
+const form = document.querySelector('#employee-form');
+
+
+  function renderEmployee() {
+  const fullName = document.querySelector('#full-name').value;
+  const department = document.querySelector('#department').value;
+  const level = document.querySelector('#level').value;
+  const imageUrl = document.querySelector('#image-url').value;
+
+  const employee = new Employee(fullName, department, level, imageUrl);
+  employee.render();
+
+};
+
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+  renderEmployee();
+});
+
+
+
+
