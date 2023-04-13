@@ -1,5 +1,5 @@
 "use strict"
-/*
+/* Compained code for all sections is down 
 function Employee(employeeId, fullName, department, level, imageUrl) {
     this.employeeId = employeeId;
     this.fullName = fullName;
@@ -34,7 +34,7 @@ Employee.prototype.calculateSalary = function() {
   return netSalary;
 };
 
-
+/*
 Employee.prototype.render = function() {
   document.write(`<p> ${this.employeeId} -  ${this.fullName}: ${this.salary} - ${this.department} - ${this.level} - ${this.image} </p>`);
 };
@@ -60,6 +60,8 @@ function Employee(fullName, department, level, imageUrl) {
   this.level = level;
   this.imageUrl = imageUrl;
   this.employeeId = generateEmployeeId(); 
+  this.salary = this.calculateSalary();
+
 
   this.render = function() {
     const card = document.createElement('div');
@@ -86,6 +88,10 @@ function Employee(fullName, department, level, imageUrl) {
     employeeId.textContent = `Employee ID: ${this.employeeId}`;
     card.appendChild(employeeId);
 
+    const salary = document.createElement('p');
+    salary.textContent= `Salary: ${this.salary}`;
+    card.appendChild(salary);
+
     const container = document.querySelector('.card-container');
     container.appendChild(card);
 
@@ -104,30 +110,81 @@ function Employee(fullName, department, level, imageUrl) {
   departmentContainer.appendChild(card);
 };
   };
+  Employee.prototype.calculateSalary = function() {
+    var minSalary, maxSalary;
+    switch (this.level) {
+      case 'Senior':
+        minSalary = 1500;
+        maxSalary = 2000;
+        break;
+      case 'Mid-Senior':
+        minSalary = 1000;
+        maxSalary = 1500;
+        break;
+      case 'Junior':
+        minSalary = 500;
+        maxSalary = 1000;
+        break;
+      default:
+        minSalary = 0;
+        maxSalary = 0;
+        break;
+    }
+    var salary = Math.floor(Math.random() * (maxSalary - minSalary + 1)) + minSalary;
+    var netSalary = salary * 0.925; // 7.5% tax
+    return netSalary;
+  };
 
 function generateEmployeeId() {
   return Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000;
 }
 
-const form = document.querySelector('#employee-form');
 
 
-  function renderEmployee() {
+function renderEmployee() {
   const fullName = document.querySelector('#full-name').value;
   const department = document.querySelector('#department').value;
   const level = document.querySelector('#level').value;
   const imageUrl = document.querySelector('#image-url').value;
-
+  
   const employee = new Employee(fullName, department, level, imageUrl);
   employee.render();
 
+  let employeesData = localStorage.getItem('employees');
+  let employees = [];
+
+  if (employeesData) {
+    employees = JSON.parse(employeesData);
+}
+   employees.push(employee);
+
+   localStorage.setItem('employees', JSON.stringify(employees));
 };
 
+
+const form = document.querySelector('#employee-form');
 form.addEventListener('submit', function(event) {
-  event.preventDefault();
-  renderEmployee();
+     event.preventDefault();
+   renderEmployee();
 });
 
+window.onload = function() {
+  const employees = JSON.parse(localStorage.getItem('employees')) || [];
 
+  for (let i = 0; i < employees.length; i++) {
+    const employee = new Employee(
+      employees[i].fullName,
+      employees[i].department,
+      employees[i].level,
+      employees[i].imageUrl
+    );
+
+    employee.employeeId = employees[i].employeeId;
+    employee.salary = employees[i].salary;
+ 
+
+    employee.render();
+  }
+};
 
 
